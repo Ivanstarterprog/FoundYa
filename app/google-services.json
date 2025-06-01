@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "982955733074",
+    "project_id": "foundya-ce4c5",
+    "storage_bucket": "foundya-ce4c5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982955733074:android:42313508d6d6830dc3ef8b",
+        "android_client_info": {
+          "package_name": "com.example.foundya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "***REMOVED***"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
