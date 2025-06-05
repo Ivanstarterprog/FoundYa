@@ -39,7 +39,7 @@ object FirebaseModule {
     @Singleton
     fun provideGoogleSignInOptions(): GoogleSignInOptions =
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("ваш_web_client_id") // Из google-services.json
+            .requestIdToken("1:982955733074:android:6108dc6620fbf750c3ef8b")
             .requestEmail()
             .build()
 
