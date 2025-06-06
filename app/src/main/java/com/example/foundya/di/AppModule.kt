@@ -20,4 +20,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideResources(application: Application): Resources = application.resources
+
+
 }

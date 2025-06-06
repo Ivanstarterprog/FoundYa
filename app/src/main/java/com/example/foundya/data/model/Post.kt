@@ -1,7 +1,6 @@
 package com.example.foundya.data.model
 
 import com.google.firebase.Timestamp
-
 data class Post(
     val id: String = "",
     val type: String, // "found" или "lost"
@@ -11,7 +10,8 @@ data class Post(
     val contact: String,
     val imageUrl: String? = null,
     val timestamp: Timestamp = Timestamp.now(),
-    val ownerId: String = ""
+    val ownerId: String = "",
+    val ownerToken: String? = null
 ) {
     companion object {
         fun fromMap(map: Map<String, Any>): Post {
@@ -24,7 +24,8 @@ data class Post(
                 contact = map["contact"] as? String ?: "",
                 imageUrl = map["imageUrl"] as? String,
                 timestamp = map["timestamp"] as? Timestamp ?: Timestamp.now(),
-                ownerId = map["ownerId"] as? String ?: ""
+                ownerId = map["ownerId"] as? String ?: "",
+                ownerToken = map["ownerToken"] as? String?
             )
         }
 
@@ -37,7 +38,8 @@ data class Post(
                 "contact" to post.contact,
                 "imageUrl" to (post.imageUrl ?: ""),
                 "timestamp" to post.timestamp,
-                "ownerId" to post.ownerId
+                "ownerId" to post.ownerId,
+                "ownerToken" to (post.ownerToken ?: "")
             )
         }
     }
