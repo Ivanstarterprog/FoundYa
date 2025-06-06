@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.foundya.ui.auth.LoginScreen
 import com.example.foundya.ui.auth.RegisterScreen
+import com.example.foundya.ui.main.MainScreen
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -29,5 +30,9 @@ fun NavGraph(navController: NavHostController) {
                 onNavigateToLogin = { navController.popBackStack() }
             )
         }
+        composable("main") {
+            MainScreen()
+        }
+
     }
 }

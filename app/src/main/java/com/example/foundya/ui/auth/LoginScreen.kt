@@ -17,8 +17,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.foundya.R
 import com.example.foundya.ui.Composables.AuthField.AuthField
 import com.example.foundya.ui.Composables.PasswordField.PasswordField
 
@@ -42,7 +44,7 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Вход в систему",
+            text = stringResource(R.string.EnterSystem),
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 32.dp)
         )
@@ -50,7 +52,7 @@ fun LoginScreen(
         AuthField(
             value = uiState.email,
             onValueChange = { viewModel.onEvent(AuthEvent.EmailChanged(it)) },
-            label = "Email",
+            label = stringResource(R.string.Email),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -59,7 +61,7 @@ fun LoginScreen(
         PasswordField(
             value = uiState.password,
             onValueChange = { viewModel.onEvent(AuthEvent.PasswordChanged(it)) },
-            label = "Пароль",
+            label = stringResource(R.string.Password),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -73,14 +75,14 @@ fun LoginScreen(
             if (uiState.isLoading) {
                 CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
             } else {
-                Text("Войти")
+                Text(stringResource(R.string.SignIn))
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         TextButton(onClick = onNavigateToRegister) {
-            Text("Нет аккаунта? Зарегистрироваться")
+            Text(stringResource(R.string.NoAccountRegister))
         }
 
         uiState.errorMessage?.let { error ->

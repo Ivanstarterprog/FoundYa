@@ -6,4 +6,9 @@
     <string name="Name">Имя</string>
     <string name="HidePassword">Спрятать пароль</string>
     <string name="ShowPassword">Показать пароль</string>
+    <string name="SignIn">Войти</string>
+    <string name="NoAccountRegister">Нет аккаунта? Зарегистрироваться</string>
+    <string name="EnterSystem">Вход в систему</string>
+    <string name="Email">Email</string>
+    <string name="Password">Пароль</string>
 </resources>

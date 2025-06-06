@@ -70,7 +70,7 @@ fun RegisterScreen(
         AuthField(
             value = uiState.email,
             onValueChange = { viewModel.onEvent(AuthEvent.EmailChanged(it)) },
-            label = "Email",
+            label = stringResource(R.string.Email),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -79,7 +79,7 @@ fun RegisterScreen(
         PasswordField(
             value = uiState.password,
             onValueChange = { viewModel.onEvent(AuthEvent.PasswordChanged(it)) },
-            label = "Пароль",
+            label = stringResource(R.string.Password),
             modifier = Modifier.fillMaxWidth()
         )
 
