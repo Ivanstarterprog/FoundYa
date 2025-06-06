@@ -1,5 +1,9 @@
 package com.example.foundya.di
 
+import com.example.foundya.data.repository.AuthRepository
+import com.example.foundya.data.repository.AuthRepositoryImpl
+import com.example.foundya.data.repository.PostRepository
+import com.example.foundya.data.repository.PostRepositoryImpl
 import com.example.foundya.utils.FirebaseStorageConstants
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -45,8 +49,19 @@ object FirebaseModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseStroageInstance(): StorageReference {
+    fun provideFirebaseStorageInstance(): StorageReference {
         return FirebaseStorage.getInstance().getReference(FirebaseStorageConstants.ROOT_DIRECTORY)
     }
 
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(auth: FirebaseAuth): AuthRepository = AuthRepositoryImpl(auth)
+
+    @Provides
+    @Singleton
+    fun providePostRepository(
+        firestore: FirebaseFirestore,
+        auth: FirebaseAuth
+    ): PostRepository = PostRepositoryImpl(firestore, auth)
 }

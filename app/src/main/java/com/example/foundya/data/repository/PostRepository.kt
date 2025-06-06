@@ -1,13 +1,15 @@
 package com.example.foundya.data.repository
 
 import com.example.foundya.data.model.Post
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val auth: FirebaseAuth
 ) : PostRepository {
 
     override suspend fun getPosts(type: String?): List<Post> {
@@ -28,7 +30,9 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createPost(post: Post): String {
-        val docRef = firestore.collection("posts").add(Post.toMap(post)).await()
+        val user = auth.currentUser?.uid ?: throw Exception("Not authenticated")
+        val postWithOwner = post.copy(ownerId = user)
+        val docRef = firestore.collection("posts").add(Post.toMap(postWithOwner)).await()
         return docRef.id
     }
 }
