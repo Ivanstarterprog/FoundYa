@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">FoundYa!</string>
+    <string name="Registration">Зарегистрироваться</string>
+    <string name="DoYouHaveAccount">Уже есть аккаунт? Войти</string>
+    <string name="ConfirmPassword">Подтвердите пароль</string>
+    <string name="Name">Имя</string>
+    <string name="HidePassword">Спрятать пароль</string>
+    <string name="ShowPassword">Показать пароль</string>
 </resources>
