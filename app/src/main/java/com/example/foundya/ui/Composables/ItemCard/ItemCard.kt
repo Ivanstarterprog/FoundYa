@@ -31,9 +31,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.compose.FoundYaTheme
 import com.example.foundya.R
 import com.example.foundya.data.model.Post
-import com.example.foundya.ui.theme.FoundYaTheme
 
 @Composable
 fun ItemCard(
@@ -49,13 +49,12 @@ fun ItemCard(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        onClick = { /* Обработка клика по карточке */ }
+        onClick = { }
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Изображение (используем метод getImageUrl из модели Post)
             AsyncImage(
                 model = post.getImageUrl(placeholderUrl),
                 contentDescription = post.title,
@@ -170,7 +169,7 @@ fun PostCardWithPlaceholderPreview() {
                 description = "Потерял связку ключей с брелоком в виде медведя",
                 location = "Метро Университет",
                 contact = "8-999-123-45-67",
-                imageUrl = null // Нет изображения - будет использован placeholder
+                imageUrl = "https://NurgazinIvan.pythonanywhere.com/api/uploads/placeholder.jpg"
             ),
             placeholderUrl = "https://NurgazinIvan.pythonanywhere.com/api/uploads/placeholder.jpg",
             onClaimClick = {}
@@ -193,7 +192,7 @@ fun PostCardClaimingPreview() {
             ),
             placeholderUrl = "https://NurgazinIvan.pythonanywhere.com/api/uploads/placeholder.jpg",
             onClaimClick = {},
-            isClaiming = true // Показываем состояние загрузки
+            isClaiming = true
         )
     }
 }
@@ -213,7 +212,7 @@ fun PostCardClaimedPreview() {
             ),
             placeholderUrl = "https://NurgazinIvan.pythonanywhere.com/api/uploads/placeholder.jpg",
             onClaimClick = {},
-            isClaimed = true // Показываем успешную отправку
+            isClaimed = true
         )
     }
 }
@@ -233,7 +232,7 @@ fun PostCardErrorPreview() {
             ),
             placeholderUrl = "https://yourusername.pythonanywhere.com/api/uploads/placeholder.jpg",
             onClaimClick = {},
-            errorMessage = "Ошибка сети. Попробуйте позже" // Показываем ошибку
+            errorMessage = "Ошибка сети. Попробуйте позже"
         )
     }
 }

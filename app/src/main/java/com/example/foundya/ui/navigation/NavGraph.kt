@@ -17,22 +17,24 @@ fun NavGraph(navController: NavHostController) {
     ) {
         composable("login") {
             LoginScreen(
-                onLoginSuccess = { navController.navigate("main") },
+                onLoginSuccess = { navController.navigate("main") {
+                    popUpTo("login") { inclusive = true }
+                } },
                 onNavigateToRegister = { navController.navigate("register") }
             )
         }
         composable("register") {
             RegisterScreen(
                 onRegisterSuccess = {
-                    navController.popBackStack()
-                    navController.navigate("main")
+                    navController.navigate("main") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 },
-                onNavigateToLogin = { navController.popBackStack() }
+                onNavigateToLogin = { navController.navigate("login") }
             )
         }
         composable("main") {
             MainScreen()
         }
-
     }
 }

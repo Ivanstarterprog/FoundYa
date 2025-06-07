@@ -4,20 +4,27 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.compose.FoundYaTheme
 import com.example.foundya.R
-import com.example.foundya.ui.Composables.ItemCard.ClaimState
+import com.example.foundya.ui.Composables.AddPost.AddPostDialog
 import com.example.foundya.ui.Composables.ItemCard.ItemCard
 import com.example.foundya.ui.Composables.ItemCard.PostListViewModel
-import com.example.foundya.ui.theme.FoundYaTheme
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,6 +36,7 @@ fun MainScreen(
     val posts = viewModel.posts.value
     val placeholderUrl = viewModel.placeholderUrl.value
     val claimStates = viewModel.claimStates.value
+    val showDialog = remember { mutableStateOf(false) }
 
     FoundYaTheme {
         Scaffold(
@@ -37,8 +45,20 @@ fun MainScreen(
                 TopAppBar(
                     title = { Text(stringResource(R.string.app_name)) }
                 )
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { showDialog.value = true },
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Добавить пост")
+                }
             }
         ) { innerPadding ->
+            LaunchedEffect(posts) {
+                println("Posts updated: ${posts.size} items")
+                posts.forEach { println(it) }
+            }
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -47,7 +67,7 @@ fun MainScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(posts) { post ->
-                    val claimState = claimStates[post.id] ?: ClaimState()
+                    val claimState = claimStates[post.id] ?: PostListViewModel.ClaimState()
                     ItemCard(
                         post = post,
                         placeholderUrl = placeholderUrl,
@@ -59,6 +79,16 @@ fun MainScreen(
                     )
                 }
             }
+            if (showDialog.value) {
+                AddPostDialog(
+                    onDismiss = { showDialog.value = false },
+                    onConfirm = { newPost ->
+                        viewModel.addPost(newPost)
+                        showDialog.value = false
+                    }
+                )
+            }
         }
+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.foundya.ui.Composables.ItemCard
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foundya.data.model.Post
@@ -7,11 +8,14 @@ import com.example.foundya.data.repository.ImageRepository
 import com.example.foundya.data.repository.NotificationRepository
 import com.example.foundya.data.repository.PostRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +23,8 @@ class PostListViewModel @Inject constructor(
     private val postRepository: PostRepository,
     private val imageRepository: ImageRepository,
     private val notificationRepository: NotificationRepository,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val messaging: FirebaseMessaging
 ) : ViewModel() {
 
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
@@ -49,9 +54,11 @@ class PostListViewModel @Inject constructor(
     private fun loadPosts() {
         viewModelScope.launch {
             try {
-                _posts.value = postRepository.getPosts()
+                val posts = postRepository.getPosts()
+                Log.d("PostListVM", "Loaded posts: ${posts.size}") // Логируем количество
+                _posts.value = posts
             } catch (e: Exception) {
-                TODO()
+                Log.e("PostListVM", "Error loading posts", e) // Логируем ошибку
             }
         }
     }
@@ -71,10 +78,42 @@ class PostListViewModel @Inject constructor(
             }
         }
     }
-}
 
-data class ClaimState(
-    val isClaiming: Boolean = false,
-    val isClaimed: Boolean = false,
-    val errorMessage: String? = null
-)
+    fun addPost(post: Post) {
+        viewModelScope.launch {
+            try {
+                // 1. Загружаем изображение если есть
+                val imageUrl = post.imageUrl?.let { uri ->
+                    val file = File(uri)
+                    imageRepository.uploadImage(file).url
+                }
+
+                val user = auth.currentUser?.uid ?: throw Exception("Не авторизован")
+                val ownerToken = try { messaging.token.await() } catch (e: Exception) { null }
+
+                val postWithOwner = post.copy(
+                    imageUrl = imageUrl,
+                    ownerId = user,
+                    ownerToken = ownerToken
+                )
+
+                // 3. Сохраняем в Firestore
+                val postId = postRepository.createPost(postWithOwner)
+                val postWithId = postWithOwner.copy(id = postId)
+
+                // 4. Обновляем UI (ВАЖНО: создаем новый список)
+                _posts.value = _posts.value.toMutableList().apply { add(0, postWithId) }
+
+            } catch (e: Exception) {
+                // Логируем ошибку
+                Log.e("PostListViewModel", "Ошибка добавления поста", e)
+            }
+        }
+    }
+
+    data class ClaimState(
+        val isClaiming: Boolean = false,
+        val isClaimed: Boolean = false,
+        val errorMessage: String? = null
+    )
+}
