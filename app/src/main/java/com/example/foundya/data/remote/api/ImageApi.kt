@@ -16,7 +16,14 @@ interface ImageApi {
     ): ImageUploadResponse
 
     @GET("api/images/{image_id}")
-    suspend fun getImageUrl(@Path("image_id") imageId: Int): ImageUrlResponse
+    suspend fun getImageUrl(
+        @Path("image_id") imageId: Int
+    ): ImageUrlResponse
+
+    companion object {
+        const val CONNECTION_TIMEOUT = 30L
+        const val READ_TIMEOUT = 30L
+    }
 }
 
 data class ImageUploadResponse(

@@ -13,6 +13,10 @@ data class Post(
     val ownerId: String = "",
     val ownerToken: String? = null
 ) {
+    fun getImageUrl(placeholderUrl: String? = null): String {
+        return imageUrl ?: placeholderUrl ?: "https://NurgazinIvan.pythonanywhere.com/api/uploads/placeholder.jpg"
+    }
+
     companion object {
         fun fromMap(map: Map<String, Any>): Post {
             return Post(

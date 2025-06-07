@@ -1,7 +1,10 @@
 package com.example.foundya.di
 
+import com.example.foundya.data.remote.api.ImageApi
 import com.example.foundya.data.repository.AuthRepository
 import com.example.foundya.data.repository.AuthRepositoryImpl
+import com.example.foundya.data.repository.ImageRepository
+import com.example.foundya.data.repository.ImageRepositoryImpl
 import com.example.foundya.data.repository.NotificationRepository
 import com.example.foundya.data.repository.NotificationRepositoryImpl
 import com.example.foundya.data.repository.PostRepository
@@ -20,6 +23,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -86,4 +90,13 @@ object FirebaseModule {
         firestore: FirebaseFirestore,
         messaging: FirebaseMessaging
     ): NotificationRepository = NotificationRepositoryImpl(firestore, messaging)
+
+    @Provides
+    @Singleton
+    fun provideImageRepository(
+        api: ImageApi,
+        okHttpClient: OkHttpClient
+    ): ImageRepository {
+        return ImageRepositoryImpl(api, okHttpClient)
+    }
 }
