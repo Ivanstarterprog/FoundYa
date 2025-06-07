@@ -23,3 +23,8 @@ object FirebaseStorageConstants {
     val ROOT_DIRECTORY = "app"
     val NOTE_IMAGES = "note"
 }
+
+object BackendConfig {
+    const val BASE_URL = "https://NurgazinIvan.pythonanywhere.com/"
+    const val PLACEHOLDER_IMAGE_ID = 1
+}

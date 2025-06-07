@@ -5,4 +5,11 @@ data class ApiResponse(
     val message: String? = null,
     val imageId: Int? = null,
     val url: String? = null
-)
+) {
+    companion object {
+        fun error(exception: Exception) = ApiResponse(
+            success = false,
+            message = exception.localizedMessage
+        )
+    }
+}
