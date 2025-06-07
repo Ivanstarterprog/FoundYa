@@ -26,7 +26,7 @@ fun PasswordField(
     onValueChange: (String) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
-    isError: Boolean = false // Добавляем параметр
+    isError: Boolean = false
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -47,6 +47,6 @@ fun PasswordField(
                 )
             }
         },
-        isError = isError // Передаем в TextField
+        isError = isError
     )
 }

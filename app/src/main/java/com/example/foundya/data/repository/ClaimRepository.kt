@@ -16,7 +16,7 @@ class ClaimRepositoryImpl @Inject constructor(
 
         firestore.collection("claims")
             .add(claim)
-            .addOnSuccessListener { /* Успех */ }
-            .addOnFailureListener { /* Ошибка */ }
+            .addOnSuccessListener {  }
+            .addOnFailureListener { }
     }
 }

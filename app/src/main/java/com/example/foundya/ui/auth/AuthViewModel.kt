@@ -26,10 +26,10 @@ class AuthViewModel @Inject constructor(
             is AuthEvent.PasswordChanged -> {
                 _uiState.value = _uiState.value.copy(password = event.password)
             }
-            is AuthEvent.NameChanged -> { // Добавлено
+            is AuthEvent.NameChanged -> {
                 _uiState.value = _uiState.value.copy(name = event.name)
             }
-            is AuthEvent.ConfirmPasswordChanged -> { // Добавлено
+            is AuthEvent.ConfirmPasswordChanged -> {
                 _uiState.value = _uiState.value.copy(confirmPassword = event.confirmPassword)
             }
             is AuthEvent.Login -> login()
@@ -72,7 +72,7 @@ class AuthViewModel @Inject constructor(
                 }.onFailure { e ->
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        errorMessage = e.message ?: "Не получилось зарегестрироваться"
+                        errorMessage = e.message ?: "Не получилось зарегистрироваться"
                     )
                 }
             }

@@ -12,4 +12,10 @@
     <string name="Email">Email</string>
     <string name="Password">Пароль</string>
     <string name="NewMessage">Новое уведомление</string>
+    <string name="all_posts">Все посты</string>
+    <string name="my_posts">Мои посты</string>
+    <string name="AddPost">Добавить пост</string>
+    <string name="NoPosts">Нет постов для отображения</string>
+    <string name="NoYourPosts">У вас пока нет постов</string>
+    <string name="failed_to_save_token">Не получилось сохранить токен\n</string>
 </resources>

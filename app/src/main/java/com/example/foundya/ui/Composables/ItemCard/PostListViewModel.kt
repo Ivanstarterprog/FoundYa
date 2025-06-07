@@ -37,28 +37,18 @@ class PostListViewModel @Inject constructor(
     val claimStates: StateFlow<Map<String, ClaimState>> = _claimStates.asStateFlow()
 
     init {
-        loadPlaceholder()
+        Log.d("ViewModelDebug", "ViewModel инициализирована")
         loadPosts()
-    }
-
-    private fun loadPlaceholder() {
-        viewModelScope.launch {
-            try {
-                _placeholderUrl.value = imageRepository.getImageUrl(1)
-            } catch (e: Exception) {
-                TODO()
-            }
-        }
     }
 
     private fun loadPosts() {
         viewModelScope.launch {
+            Log.d("ViewModelDebug", "Начало загрузки постов...")
             try {
-                val posts = postRepository.getPosts()
-                Log.d("PostListVM", "Loaded posts: ${posts.size}") // Логируем количество
-                _posts.value = posts
+                _posts.value = postRepository.getPosts()
+                Log.d("ViewModelDebug", "Посты обновлены в ViewModel: ${_posts.value.size} шт.")
             } catch (e: Exception) {
-                Log.e("PostListVM", "Error loading posts", e) // Логируем ошибку
+                Log.e("ViewModelDebug", "Ошибка в ViewModel: ${e.message}")
             }
         }
     }
@@ -78,11 +68,23 @@ class PostListViewModel @Inject constructor(
             }
         }
     }
+    fun deletePost(postId: String) {
+        viewModelScope.launch {
+            try {
+                postRepository.deletePost(postId)
+                _posts.value = _posts.value.filter { it.id != postId }
+            } catch (e: Exception) {
+                Log.e("PostListViewModel", "Ошибка удаления поста", e)
+            }
+        }
+    }
 
+    fun isPostOwnedByUser(post: Post): Boolean {
+        return post.ownerId == auth.currentUser?.uid
+    }
     fun addPost(post: Post) {
         viewModelScope.launch {
             try {
-                // 1. Загружаем изображение если есть
                 val imageUrl = post.imageUrl?.let { uri ->
                     val file = File(uri)
                     imageRepository.uploadImage(file).url
@@ -97,15 +99,12 @@ class PostListViewModel @Inject constructor(
                     ownerToken = ownerToken
                 )
 
-                // 3. Сохраняем в Firestore
                 val postId = postRepository.createPost(postWithOwner)
                 val postWithId = postWithOwner.copy(id = postId)
 
-                // 4. Обновляем UI (ВАЖНО: создаем новый список)
                 _posts.value = _posts.value.toMutableList().apply { add(0, postWithId) }
 
             } catch (e: Exception) {
-                // Логируем ошибку
                 Log.e("PostListViewModel", "Ошибка добавления поста", e)
             }
         }

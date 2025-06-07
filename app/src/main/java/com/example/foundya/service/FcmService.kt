@@ -40,9 +40,9 @@ class FcmService : FirebaseMessagingService() {
         serviceScope.launch {
             try {
                 repository.saveToken(token)
-                Log.d("FCM", "Token saved successfully: $token")
+                Log.d("FCM", "Токен успешно сохранен: $token")
             } catch (e: Exception) {
-                Log.e("FCM", "Failed to save token", e)
+                Log.e("FCM", getString(R.string.failed_to_save_token), e)
             }
         }
     }

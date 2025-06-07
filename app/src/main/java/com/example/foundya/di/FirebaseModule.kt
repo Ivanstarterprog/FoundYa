@@ -48,13 +48,6 @@ object FirebaseModule {
         return FirebaseAuth.getInstance()
     }
 
-    @Provides
-    @Singleton
-    fun provideGoogleSignInOptions(): GoogleSignInOptions =
-        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("1:982955733074:android:6108dc6620fbf750c3ef8b")
-            .requestEmail()
-            .build()
 
     @Singleton
     @Provides
